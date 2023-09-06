@@ -1,57 +1,55 @@
 package com.raman.spring.services;
 
-import com.raman.spring.dao.BookDAO;
 import com.raman.spring.entity.Book;
+import com.raman.spring.repositories.BooksRepositories;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
+@Transactional
 public class BookServiceImplementation implements BookService {
+
     @Autowired
-    private BookDAO bookDAO;
+    private BooksRepositories booksRepositories;
+
     @Override
-    @Transactional
     public List<Book> getAllBook() {
-        return bookDAO.getAllBook();
+        return booksRepositories.findAll();
     }
 
     @Override
-    @Transactional
     public void saveBook(Book book) {
-        bookDAO.saveBook(book);
+        booksRepositories.save(book);
     }
 
     @Override
-    @Transactional
     public Book getBook(int id) {
-        return bookDAO.getBook(id);
+        Optional<Book> book = booksRepositories.findById(id);
+        return book.orElse(null);
     }
 
     @Override
-    @Transactional
     public void updateBook(Book book, int id) {
         book.setId(id);
-        bookDAO.updateBook(book);
+        booksRepositories.save(book);
     }
 
     @Override
-    @Transactional
     public void deleteBook(int id) {
-        bookDAO.deleteBook(id);
+        booksRepositories.deleteById(id);
     }
 
     @Override
-    @Transactional
     public void addPersonInBook(int book_id, int person_id) {
-        bookDAO.addPersonInBook(book_id, person_id);
+        booksRepositories.savePerson(book_id, person_id);
     }
 
     @Override
-    @Transactional
     public void removePersonFromBook(int id) {
-        bookDAO.removePersonFromBook(id);
+        booksRepositories.removePersonById(id);
     }
 }

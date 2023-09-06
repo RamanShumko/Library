@@ -1,58 +1,55 @@
 package com.raman.spring.services;
 
-import com.raman.spring.dao.PersonDAO;
 import com.raman.spring.entity.Book;
 import com.raman.spring.entity.Person;
+import com.raman.spring.repositories.PersonsRepositories;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
+@Transactional
 public class PersonServiceImplementation implements PersonService{
+
     @Autowired
-    private PersonDAO personDAO;
+    private PersonsRepositories personsRepositories;
 
     @Override
-    @Transactional
     public List<Person> getAllPersons() {
-        return personDAO.getAllPersons();
+        return personsRepositories.findAll();
     }
 
     @Override
-    @Transactional
     public void savePerson(Person person) {
-        personDAO.savePerson(person);
+        personsRepositories.save(person);
     }
 
     @Override
-    @Transactional
     public Person getPerson(int id) {
-        return personDAO.getPerson(id);
+        Optional<Person> person = personsRepositories.findById(id);
+        return person.orElse(null);
     }
 
     @Override
-    @Transactional
     public Person getPerson(String fullName) {
-        return personDAO.getPerson(fullName);
+        return personsRepositories.findPersonByFullName(fullName);
     }
 
     @Override
-    @Transactional
     public void updatePerson(Person person) {
-        personDAO.updatePerson(person);
+        personsRepositories.save(person);
     }
 
     @Override
-    @Transactional
     public void deletePerson(int id) {
-        personDAO.deletePerson(id);
+        personsRepositories.deleteById(id);
     }
 
     @Override
-    @Transactional
     public List<Book> busyBooks(int id) {
-        return personDAO.busyBooks(id);
+        return personsRepositories.findBooksById(id);
     }
 }

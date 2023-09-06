@@ -1,12 +1,18 @@
 package com.raman.spring.config;
 
-import javax.servlet.*;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+import javax.servlet.DispatcherType;
+import javax.servlet.FilterRegistration;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import java.util.EnumSet;
 
+/**
+ * @author Neil Alishev
+ */
 public class MySpringMvcDispatcherSerlvetIntitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
@@ -24,7 +30,7 @@ public class MySpringMvcDispatcherSerlvetIntitializer extends AbstractAnnotation
     }
 
     @Override
-    public void onStartup(ServletContext aServletContext) throws javax.servlet.ServletException {
+    public void onStartup(ServletContext aServletContext) throws ServletException {
         super.onStartup(aServletContext);
         registerCharacterEncodingFilter(aServletContext);
         registerHiddenFieldFilter(aServletContext);
@@ -32,7 +38,7 @@ public class MySpringMvcDispatcherSerlvetIntitializer extends AbstractAnnotation
 
     private void registerHiddenFieldFilter(ServletContext aContext) {
         aContext.addFilter("hiddenHttpMethodFilter",
-                new HiddenHttpMethodFilter()).addMappingForUrlPatterns(null ,true, "/*");
+                new HiddenHttpMethodFilter()).addMappingForUrlPatterns(null, true, "/*");
     }
 
     private void registerCharacterEncodingFilter(ServletContext aContext) {

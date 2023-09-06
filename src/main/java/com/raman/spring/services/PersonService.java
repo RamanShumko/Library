@@ -3,7 +3,6 @@ package com.raman.spring.services;
 import com.raman.spring.entity.Book;
 import com.raman.spring.entity.Person;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
