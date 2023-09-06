@@ -17,7 +17,7 @@ public interface BookService {
 
     void deleteBook(int id);
 
-    void addPersonInBook(int book_id, int person_id);
-
-    void removePersonFromBook(int id);
+//    void addPersonInBook(int book_id, int person_id);
+//
+//    void removePersonFromBook(int id);
 }

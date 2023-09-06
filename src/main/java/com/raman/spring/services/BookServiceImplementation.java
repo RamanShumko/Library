@@ -43,13 +43,13 @@ public class BookServiceImplementation implements BookService {
         booksRepositories.deleteById(id);
     }
 
-    @Override
-    public void addPersonInBook(int book_id, int person_id) {
-        booksRepositories.savePerson(book_id, person_id);
-    }
-
-    @Override
-    public void removePersonFromBook(int id) {
-        booksRepositories.removePersonById(id);
-    }
+//    @Override
+//    public void addPersonInBook(int book_id, int person_id) {
+//        booksRepositories.savePerson(book_id, person_id);
+//    }
+//
+//    @Override
+//    public void removePersonFromBook(int id) {
+//        booksRepositories.removePersonById(id);
+//    }
 }

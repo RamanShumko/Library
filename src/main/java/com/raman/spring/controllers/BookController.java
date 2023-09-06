@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/books")
@@ -38,13 +38,13 @@ public class BookController {
     @PatchMapping ("/{id}/person")
     public String addPersonInBook(@PathVariable("id") int book_id,
                             @RequestParam("id") int person_id){
-        bookService.addPersonInBook(book_id, person_id);
+        //bookService.addPersonInBook(book_id, person_id);
         return "redirect:/books";
     }
 
     @DeleteMapping("/{id}/remove/person")
     public String removePersonFromBook(@PathVariable("id") int id){
-        bookService.removePersonFromBook(id);
+        //bookService.removePersonFromBook(id);
         return "redirect:/books";
     }
 
