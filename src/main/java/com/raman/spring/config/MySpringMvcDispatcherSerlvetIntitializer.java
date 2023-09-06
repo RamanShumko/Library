@@ -1,6 +1,6 @@
 package com.raman.spring.config;
 
-import javax.servlet.*;
+import jakarta.servlet.*;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
@@ -24,7 +24,7 @@ public class MySpringMvcDispatcherSerlvetIntitializer extends AbstractAnnotation
     }
 
     @Override
-    public void onStartup(ServletContext aServletContext) throws javax.servlet.ServletException {
+    public void onStartup(ServletContext aServletContext) throws jakarta.servlet.ServletException {
         super.onStartup(aServletContext);
         registerCharacterEncodingFilter(aServletContext);
         registerHiddenFieldFilter(aServletContext);
