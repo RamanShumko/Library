@@ -4,10 +4,12 @@ import com.raman.spring.entity.Book;
 import com.raman.spring.entity.Person;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class PersonDAOImplementation implements PersonDAO{
@@ -38,9 +40,9 @@ public class PersonDAOImplementation implements PersonDAO{
     @Override
     public Person getPerson(String fullName) {
         Session session = sessionFactory.getCurrentSession();
-        Person person = (Person) session.createQuery("from Person where fullName =: fullName")
+        Query person = session.createQuery("from Person where fullName =:fullName")
                 .setParameter("fullName", fullName);
-        return person;
+        return (Person) person.uniqueResult();
     }
 
     @Override
