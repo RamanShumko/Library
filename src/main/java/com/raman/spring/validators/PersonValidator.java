@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import com.raman.spring.entity.Person;
+
+import java.util.Optional;
+
 @Component
 public class PersonValidator implements Validator {
     @Autowired
@@ -20,8 +23,13 @@ public class PersonValidator implements Validator {
 
     @Override
     public void validate(Object o, Errors errors) {
-        Person person = (Person) o;
-        if(personService.getPerson(person.getFullName()) != null){
+        Person personNew = (Person) o;
+        Person person = personService.getPerson(personNew.getId());
+        if (personService.getPerson(personNew.getFullName()) != null && person == null) {
+            errors.rejectValue("fullName", "", "This name is already taken");
+        }
+        else if (personService.getPerson(personNew.getFullName()) != null &&
+                !(personNew.getFullName().equals(person.getFullName()))) {
             errors.rejectValue("fullName", "", "This name is already taken");
         }
     }
