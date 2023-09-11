@@ -21,9 +21,13 @@ public class PersonValidator implements Validator {
 
     @Override
     public void validate(Object o, Errors errors) {
-        Person person = (Person) o;
-        System.out.println("validate");
-        if(personService.getPerson(person.getFullName()) != null){
+        Person personNew = (Person) o;
+        Person person = personService.getPerson(personNew.getId());
+        if (personService.getPerson(personNew.getFullName()) != null && person == null) {
+            errors.rejectValue("fullName", "", "This name is already taken");
+        }
+        else if (personService.getPerson(personNew.getFullName()) != null &&
+                !(personNew.getFullName().equals(person.getFullName()))) {
             errors.rejectValue("fullName", "", "This name is already taken");
         }
     }
