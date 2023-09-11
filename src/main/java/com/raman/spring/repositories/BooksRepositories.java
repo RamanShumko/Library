@@ -12,9 +12,4 @@ public interface BooksRepositories extends JpaRepository<Book, Integer> {
 
     List<Book> findBooksByPerson_Id(int id);
 
-
-
-//    void savePerson(int book_id, int person_id);
-//
-//    void removePersonById(int id);
 }

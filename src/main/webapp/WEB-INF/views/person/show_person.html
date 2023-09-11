@@ -96,8 +96,15 @@ input[type="submit"]:hover {
     </div>
     <h th:if="${not #lists.isEmpty(busyBooks)}" style="font-weight: bold"> <hr> Books: <br> </h>
     <div th:if="${not #lists.isEmpty(busyBooks)}" th:each="book : ${busyBooks}">
-        <a th:href="@{/books/{id}(id=${book.getId()})}"
-           th:text="${book.bookName + ', ' + book.authorName + ', ' + book.yearOfProduction}">book</a>
+        <div th:if="${book.isExpiredTime()} == true">
+            <a style="color: red"
+               th:href="@{/books/{id}(id=${book.getId()})}"
+               th:text="${book.bookName + ', ' + book.authorName + ', ' + book.yearOfProduction}">book</a>
+        </div>
+        <div th:if="${book.isExpiredTime()} == false">
+            <a th:href="@{/books/{id}(id=${book.getId()})}"
+               th:text="${book.bookName + ', ' + book.authorName + ', ' + book.yearOfProduction}">book</a>
+        </div>
     </div>
 
     <div class="options">

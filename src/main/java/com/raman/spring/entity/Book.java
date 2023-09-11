@@ -3,6 +3,8 @@ package com.raman.spring.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "Book")
 public class Book {
@@ -20,6 +22,14 @@ public class Book {
     @Min(value = 1, message = "Year of production should be greater than 0")
     @Digits(integer = 4, fraction = 0, message = "Number of invalid connection (expected <4 bits>,<0 bits>)")
     private int yearOfProduction;
+
+    @Column(name = "book_assignment_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date bookAssignmentDate;
+
+    @Transient
+    private boolean expiredTime;
+
     @ManyToOne
     @JoinColumn(name = "person_id", referencedColumnName = "person_id")
     private Person person;
@@ -34,6 +44,22 @@ public class Book {
         this.person = person;
     }
 
+    public boolean isExpiredTime() {
+        if ( (new Date().getTime() - (10 * 24 * 60 * 60 * 1000)) >= bookAssignmentDate.getTime() ) {
+            expiredTime = true;
+        } else {
+            expiredTime = false;
+        }
+        return expiredTime;
+    }
+
+    public Date getBookAssignmentDate() {
+        return bookAssignmentDate;
+    }
+
+    public void setBookAssignmentDate(Date bookAssignmentDate) {
+        this.bookAssignmentDate = bookAssignmentDate;
+    }
 
     public Person getPerson() {
         return person;

@@ -12,6 +12,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/books")
 public class BookController {
@@ -24,7 +26,9 @@ public class BookController {
     public String getAllBooks(Model model,
                               HttpServletRequest request){
         String sort = request.getParameter("sort_by_year");
-        model.addAttribute("allBooks", bookService.getAllBook(sort));
+        String page = request.getParameter("page");
+        String booksPerPage = request.getParameter("books_per_page");
+        model.addAttribute("allBooks", bookService.getAllBook(sort, page, booksPerPage));
         return "book/show_all_books";
     }
 
@@ -97,14 +101,9 @@ public class BookController {
     @PutMapping("/search")
     public String searchResponseBook(@RequestParam("bookName") String bookName,
                                      Model model) {
-        Book foundBook = bookService.searchBook(bookName);
-        Integer i = 1;
-        model.addAttribute("count", i);
-        model.addAttribute("foundBook", foundBook);
+        model.addAttribute("count", 1);
+        model.addAttribute("foundBooks", bookService.searchBook(bookName));
         model.addAttribute("book", new Book());
-        if(foundBook != null) {
-            model.addAttribute("person", foundBook.getPerson());
-        }
         return "book/search_book";
     }
 }

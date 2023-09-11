@@ -10,17 +10,4 @@ import java.util.List;
 @Component
 public interface PersonDAO {
 
-    List<Person> getAllPersons();
-
-    void savePerson(Person person);
-
-    Person getPerson(int id);
-
-    Person getPerson(String fullName);
-
-    void updatePerson(Person person);
-
-    void deletePerson(int id);
-
-    List<Book> busyBooks(int id);
 }

@@ -4,10 +4,12 @@ import com.raman.spring.entity.Book;
 import com.raman.spring.repositories.BooksRepositories;
 import com.raman.spring.repositories.PersonsRepositories;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,14 +24,27 @@ public class BookServiceImplementation implements BookService {
     private PersonsRepositories personsRepositories;
 
     @Override
-    public List<Book> getAllBook(String sort) {
-        List<Book> getAllBooks = booksRepositories.findAll();
-        List<Book> getAllBooksSort = booksRepositories
-                .findAll(Sort.by("yearOfProduction"));
-        if(sort.equals("true")) {
-            return getAllBooksSort;
-        }else {
-            return getAllBooks;
+    public List<Book> getAllBook(String sort, String page, String booksPerPage) {
+        int i = 0;
+        if (sort == null) {
+            i = 0;
+        } else if (sort.equals("true")) {
+            i = 1;
+        }
+        if(page != null && booksPerPage != null && i == 1) {
+            return booksRepositories
+                    .findAll(PageRequest.of(Integer.parseInt(page), Integer.parseInt(booksPerPage), Sort.by("yearOfProduction")))
+                    .getContent();
+        } else if((page == null || booksPerPage == null) && i == 0){
+            return booksRepositories.findAll();
+
+        } else if (i == 1) {
+            return booksRepositories
+                    .findAll(Sort.by("yearOfProduction"));
+        } else {
+            return booksRepositories
+                    .findAll(PageRequest.of(Integer.parseInt(page), Integer.parseInt(booksPerPage)))
+                    .getContent();
         }
     }
 
@@ -55,28 +70,22 @@ public class BookServiceImplementation implements BookService {
         booksRepositories.deleteById(id);
     }
 
-    public Book searchBook(String bookName) {
-        List<Book> searchBook = booksRepositories.findBookByBookNameStartingWith(bookName);
-        Book book;
-        if(searchBook.isEmpty()) {
-            book = null;
-        }else {
-            book = searchBook.get(0);
-        }
-        return book;
+    public List<Book> searchBook(String bookName) {
+        List<Book> foundBooks = booksRepositories.findBookByBookNameStartingWith(bookName);
+        return foundBooks;
     }
 
     @Override
     public void addPersonInBook(int book_id, int person_id) {
-        booksRepositories.findById(book_id)
-                .orElse(null)
-                .setPerson(personsRepositories.findById(person_id).orElse(null));
+        Book book = booksRepositories.findById(book_id).orElse(null);
+        book.setPerson(personsRepositories.findById(person_id).orElse(null));
+        book.setBookAssignmentDate(new Date());
     }
 
     @Override
     public void removePersonFromBook(int id) {
-        booksRepositories.findById(id)
-                .orElse(null)
-                .setPerson(null);
+        Book book = booksRepositories.findById(id).orElse(null);
+        book.setPerson(null);
+        book.setBookAssignmentDate(null);
     }
 }
