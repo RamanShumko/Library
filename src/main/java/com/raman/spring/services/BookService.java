@@ -7,7 +7,7 @@ import java.util.List;
 @Component
 public interface BookService {
 
-    List<Book> getAllBook();
+    List<Book> getAllBook(String sort);
 
     void saveBook(Book book);
 
@@ -17,7 +17,9 @@ public interface BookService {
 
     void deleteBook(int id);
 
-//    void addPersonInBook(int book_id, int person_id);
-//
-//    void removePersonFromBook(int id);
+    Book searchBook(String bookName);
+
+    void addPersonInBook(int book_id, int person_id);
+
+    void removePersonFromBook(int id);
 }

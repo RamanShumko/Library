@@ -10,6 +10,4 @@ import java.util.List;
 @Repository
 public interface PersonsRepositories extends JpaRepository<Person, Integer> {
     Person findPersonByFullName(String fullName);
-
-    List<Book> findBooksById(int id);
 }

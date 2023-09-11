@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <form th:method="PUT" th:action="@{/books/search}" th:object="${book}">
+        <label for="bookName">Enter your search term:</label>
+        <input type="text" th:field="*{bookName}" id="bookName">
+
+        <br>
+
+        <input type="submit" value="Search">
+    </form>
+
+    <br>
+
+    <div th:if="${foundBook} != null and ${count} == 1">
+        <a th:href="@{/books/{id} (id=${foundBook.id})}"
+           th:text="${foundBook.bookName + ', ' + foundBook.authorName + ', ' + foundBook.yearOfProduction}">foundBook</a>
+
+        <br>
+        <br>
+
+        <div th:if="${person} != null">
+            <h>The book is now: </h>
+            <a th:href="@{/persons/{id} (id=${person.id})}"
+               th:text="${person.fullName + ', ' + person.yearOfBirth}">person</a>
+        </div>
+
+        <div th:if="${person} == null">
+            <h>The book is free!</h>
+        </div>
+
+    </div>
+
+    <div th:if="${foundBook} == null and ${count} == 1">
+        <h>Book not found!</h>
+    </div>
+
+</body>
+</html>

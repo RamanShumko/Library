@@ -2,6 +2,7 @@ package com.raman.spring.services;
 
 import com.raman.spring.entity.Book;
 import com.raman.spring.entity.Person;
+import com.raman.spring.repositories.BooksRepositories;
 import com.raman.spring.repositories.PersonsRepositories;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,9 @@ public class PersonServiceImplementation implements PersonService{
 
     @Autowired
     private PersonsRepositories personsRepositories;
+
+    @Autowired
+    private BooksRepositories booksRepositories;
 
     @Override
     public List<Person> getAllPersons() {
@@ -49,7 +53,7 @@ public class PersonServiceImplementation implements PersonService{
     }
 
     @Override
-    public List<Book> busyBooks(int id) {
-        return personsRepositories.findBooksById(id);
+    public List<Book> findBooksByPerson_id(int id) {
+        return booksRepositories.findBooksByPerson_Id(id);
     }
 }

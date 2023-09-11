@@ -2,6 +2,7 @@ package com.raman.spring.validators;
 
 
 import com.raman.spring.dao.PersonDAO;
+import com.raman.spring.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -10,7 +11,7 @@ import com.raman.spring.entity.Person;
 @Component
 public class PersonValidator implements Validator {
     @Autowired
-    private PersonDAO personDAO;
+    private PersonService personService;
 
     @Override
     public boolean supports(Class<?> aClass) {
@@ -20,7 +21,7 @@ public class PersonValidator implements Validator {
     @Override
     public void validate(Object o, Errors errors) {
         Person person = (Person) o;
-        if(personDAO.getPerson(person.getFullName()) != null){
+        if(personService.getPerson(person.getFullName()) != null){
             errors.rejectValue("fullName", "", "This name is already taken");
         }
     }

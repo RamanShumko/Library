@@ -21,5 +21,5 @@ public interface PersonService {
 
     void deletePerson(int id);
 
-    List<Book> busyBooks(int id);
+    List<Book> findBooksByPerson_id(int id);
 }

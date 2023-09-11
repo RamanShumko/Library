@@ -4,6 +4,7 @@ import com.raman.spring.entity.Book;
 import com.raman.spring.entity.Person;
 import com.raman.spring.services.BookService;
 import com.raman.spring.services.PersonService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,8 +21,10 @@ public class BookController {
     private PersonService personService;
 
     @GetMapping()
-    public String getAllBooks(Model model){
-        model.addAttribute("allBooks", bookService.getAllBook());
+    public String getAllBooks(Model model,
+                              HttpServletRequest request){
+        String sort = request.getParameter("sort_by_year");
+        model.addAttribute("allBooks", bookService.getAllBook(sort));
         return "book/show_all_books";
     }
 
@@ -38,13 +41,13 @@ public class BookController {
     @PatchMapping ("/{id}/person")
     public String addPersonInBook(@PathVariable("id") int book_id,
                             @RequestParam("id") int person_id){
-        //bookService.addPersonInBook(book_id, person_id);
+        bookService.addPersonInBook(book_id, person_id);
         return "redirect:/books";
     }
 
     @DeleteMapping("/{id}/remove/person")
     public String removePersonFromBook(@PathVariable("id") int id){
-        //bookService.removePersonFromBook(id);
+        bookService.removePersonFromBook(id);
         return "redirect:/books";
     }
 
@@ -84,5 +87,24 @@ public class BookController {
     public String deleteBook(@PathVariable("id") int id){
         bookService.deleteBook(id);
         return "redirect:/books";
+    }
+
+    @GetMapping("/search")
+    public String searchBook(@ModelAttribute("book") Book book) {
+        return "book/search_book";
+    }
+
+    @PutMapping("/search")
+    public String searchResponseBook(@RequestParam("bookName") String bookName,
+                                     Model model) {
+        Book foundBook = bookService.searchBook(bookName);
+        Integer i = 1;
+        model.addAttribute("count", i);
+        model.addAttribute("foundBook", foundBook);
+        model.addAttribute("book", new Book());
+        if(foundBook != null) {
+            model.addAttribute("person", foundBook.getPerson());
+        }
+        return "book/search_book";
     }
 }

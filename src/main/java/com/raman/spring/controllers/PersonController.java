@@ -15,8 +15,8 @@ import jakarta.validation.Valid;
 public class PersonController {
     @Autowired
     private PersonService personService;
-//    @Autowired
-//    private PersonValidator personValidator;
+    @Autowired
+    private PersonValidator personValidator;
 
     @GetMapping()
     public String showAllPersons(Model model){
@@ -28,7 +28,7 @@ public class PersonController {
     public String getPerson(@PathVariable("id") int id,
                             Model model){
         model.addAttribute("person", personService.getPerson(id));
-        model.addAttribute("busyBooks", personService.busyBooks(id));
+        model.addAttribute("busyBooks", personService.findBooksByPerson_id(id));
         return "person/show_person";
     }
 
@@ -40,7 +40,7 @@ public class PersonController {
     @PostMapping()
     public String savePerson(@ModelAttribute("person") @Valid Person person,
                              BindingResult bindingResult){
-//        personValidator.validate(person, bindingResult);
+        personValidator.validate(person, bindingResult);
         if(bindingResult.hasErrors()){
             return "person/new_person";
         }
@@ -59,7 +59,7 @@ public class PersonController {
     public String editPerson(@PathVariable("id") int id,
                              @ModelAttribute("person") @Valid Person person,
                              BindingResult bindingResult){
-//        personValidator.validate(person, bindingResult);
+        personValidator.validate(person, bindingResult);
         if(bindingResult.hasErrors()){
             return "person/edit_person";
         }
